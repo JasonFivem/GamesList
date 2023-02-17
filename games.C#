@@ -1,0 +1,23 @@
+using System;
+using Microsoft.Win32;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        RegistryKey regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
+
+        if (regKey != null)
+        {
+            foreach (string subKeyName in regKey.GetSubKeyNames())
+            {
+                RegistryKey subKey = regKey.OpenSubKey(subKeyName);
+                string displayName = subKey.GetValue("DisplayName") as string;
+                if (!string.IsNullOrEmpty(displayName))
+                {
+                    Console.WriteLine(displayName);
+                }
+            }
+        }
+    }
+}
